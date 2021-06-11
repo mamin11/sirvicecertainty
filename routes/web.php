@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'CarController@index')->name('home');
+Route::post('/submit', 'CarController@create')->name('homeSubmit');
+
+Route::get('/cars/{id}', 'CarController@getCar')->name('getCar');
