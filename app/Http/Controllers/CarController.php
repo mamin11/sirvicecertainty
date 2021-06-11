@@ -36,6 +36,7 @@ class CarController extends Controller
     }
 
     public function getCar($id){
+        //get a single record from database using $id
         $car = car::where('id',$id)->first();
         return view('car')->with('car', $car);
     }
