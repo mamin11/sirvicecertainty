@@ -39,4 +39,8 @@ class CarController extends Controller
         $car = car::where('id',$id)->first();
         return view('car')->with('car', $car);
     }
+
+    public function livewire(){
+        return view('livewire');
+    }
 }

@@ -17,3 +17,6 @@ Route::get('/', 'CarController@index')->name('home');
 Route::post('/submit', 'CarController@create')->name('homeSubmit');
 
 Route::get('/cars/{id}', 'CarController@getCar')->name('getCar');
+
+//using livewire
+Route::get('/livewire', 'CarController@livewire')->name('livewire');
