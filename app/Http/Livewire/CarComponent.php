@@ -34,7 +34,9 @@ class CarComponent extends Component
         ]);
         
         //move image
-        $path = $this->image->storeAs('public/cars', $imageName);
+        // $path = $this->image->storeAs('public/cars', $imageName);
+        //upload to s3
+        $this->image->storePubliclyAs('car', $imageName, 's3');
 
         //generate url for uploaded file
         $link = URL::to('/cars/'.$car->id);

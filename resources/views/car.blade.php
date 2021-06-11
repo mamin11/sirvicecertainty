@@ -18,7 +18,7 @@
     </head>
     <body class="antialiased">
         <div class="relative flex flex-col items-top justify-center min-h-screen bg-gray-100  sm:items-center py-4 sm:pt-0">
-            <img src="{{asset('storage/cars/'.$car->image_path)}}" class="img-fluid" alt="">
+            <img src="{{empty($car->getImageFroms3()) ? asset('/storage/cars/'.$car->image_path) : asset($car->getImageFroms3())}}" class="img-fluid" alt="">
             <h1 class="text-center text-lg">{{$car->name}}</h1>
         </div>
     </body>
