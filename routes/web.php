@@ -20,3 +20,4 @@ Route::get('/cars/{id}', 'CarController@getCar')->name('getCar');
 
 //using livewire
 Route::get('/livewire', 'CarController@livewire')->name('livewire');
+Route::get('/vue', 'CarController@vue')->name('vue');
