@@ -3,77 +3,52 @@
 namespace App\Http\Controllers;
 
 use App\Models\car;
+use App\Services\CreateCar;
 use Illuminate\Http\Request;
+use App\Repositories\CarRepository;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
 
 class CarController extends Controller
 {
-    public function index() {
-        return view('welcome');
-    }
-
-    public function create(Request $request) {
-        //validate
-        $request->validate([
+    private function manualValidator($request){
+        //manual validator
+        return $validator = Validator::make($request->all(), [
             'name' => 'required',
             'image' => 'required|mimes:jpg,jpeg,png|max:2000'
         ]);
-        $imageName = $request->image->getClientOriginalName() .'-'.time().'.'.$request->image->extension();
-        //add to DB
-        $car = car::create([
-            'name' => $request->name,
-            'image_path' => $imageName
-        ]);
-        
-        //move image
-        $path = $request->file('image')->storeAs('public/cars', $imageName);
+    }
 
-        //generate url for uploaded file
-        $link = URL::to('/cars/'.$car->id);
+    public function getCar($id, CarRepository $carRepository){
+        //get a single record from database using $id
+        $car = car::where('id',$id)->first();
+        $image = $carRepository->getCarImage($car);
+        return view('car')->with([
+            'car' => $car,
+            'image' => $image
+        ]);
+    }
+
+    public function create(Request $request, CreateCar $createCarService) {
+        //validate
+        $this->manualValidator($request)->validate();
+
+        //add to DB
+        $link = $createCarService->execute($request);
 
         //redirect
         return redirect()->route('home')->with('link', $link);
     }
 
-    public function getCar($id){
-        //get a single record from database using $id
-        $car = car::where('id',$id)->first();
-        return view('car')->with('car', $car);
-    }
-
-    public function livewire(){
-        return view('livewire');
-    }
-
-    public function vue(){
-        return view('vue');
-    }
-
-    public function api(Request $request){
-        //manual validator
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'image' => 'required|mimes:jpg,jpeg,png|max:2000'
-        ]);
-
+    public function api(Request $request, CreateCar $createCarService){
+        $validator = $this->manualValidator($request);
+        
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 400);
         }
 
-        //create the record
         //add to DB
-        $imageName = $request->image->getClientOriginalName() .'-'.time().'.'.$request->image->extension();
-        $car = car::create([
-            'name' => $request->name,
-            'image_path' => $imageName
-        ]);
-        
-        //move image
-        $path = $request->file('image')->storeAs('public/cars', $imageName);
-
-        //generate url for uploaded file
-        $link = URL::to('/cars/'.$car->id);
+        $link = $createCarService->execute($request);
 
         return response()->json(['link' => $link], 200);
     }

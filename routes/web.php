@@ -13,11 +13,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'CarController@index')->name('home');
+//home route
+Route::get('/', function() {
+    return view('welcome');
+})->name('home');
+
+//livewire route
+Route::get('/livewire', function(){
+    return view('livewire');
+})->name('livewire');
+
+//vue route
+Route::get('/vue', function(){
+    return view('vue');
+})->name('vue');
+
+
 Route::post('/submit', 'CarController@create')->name('homeSubmit');
-
 Route::get('/cars/{id}', 'CarController@getCar')->name('getCar');
-
-//using livewire
-Route::get('/livewire', 'CarController@livewire')->name('livewire');
-Route::get('/vue', 'CarController@vue')->name('vue');

@@ -19,7 +19,9 @@
         @livewireStyles
     </head>
     <body class="antialiased">
-        @livewire('car-component')
+        <div id="app">
+            @livewire('car-component')
+        </div>
         @livewireScripts
     </body>
 </html>

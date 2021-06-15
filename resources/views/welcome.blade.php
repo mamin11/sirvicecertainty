@@ -20,6 +20,7 @@
         {{-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> --}}
     </head>
     <body class="antialiased">
+        <div id="app">
             <div class="relative flex items-top justify-center min-h-screen bg-gray-100  sm:items-center py-4 sm:pt-0">
                 <form action="{{route('homeSubmit')}}" method="POST" enctype="multipart/form-data">
                     @csrf
@@ -41,5 +42,6 @@
                         </a>
                     @endif
             </div>
+        </div>
     </body>
 </html>
